@@ -12,7 +12,7 @@ export type AbnFilterParams = {
 
 export const fetchRecords = async (filters: AbnFilterParams) => {
   try {
-    const response = await axiosInstance.post("/abn-records", filters);
+    const response = await axiosInstance.post("/registry-records", filters);
     return response;
   } catch (error) {
     console.error("Error fetching ABN records:", error);
