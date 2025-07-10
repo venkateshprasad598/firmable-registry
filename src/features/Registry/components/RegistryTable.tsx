@@ -11,7 +11,7 @@ const RegistryTable = ({
   setPage,
   fetchData,
   setSorter,
-  sorter
+  sorter,
 }: {
   data: any[];
   loading: boolean;
@@ -24,9 +24,8 @@ const RegistryTable = ({
     field: string | null;
     order: "ascend" | "descend" | null;
   }) => void;
-  sorter :any
+  sorter: any;
 }) => {
-
   const getStatusBadgeColor = (status: string) => {
     switch (status) {
       case "ACT":
@@ -99,6 +98,9 @@ const RegistryTable = ({
             bordered
             scroll={{ x: "max-content" }}
             onChange={(pagination, filters, sorter) => {
+              console.log(pagination);
+              console.log(filters);
+
               if (!Array.isArray(sorter)) {
                 setSorter({
                   field: sorter.columnKey as string,
@@ -127,4 +129,4 @@ const RegistryTable = ({
     </>
   );
 };
-export default RegistryTable
+export default RegistryTable;
