@@ -11,10 +11,14 @@ const RegistryFilters = ({
   filters,
   setFilters,
   resetFilters,
+  exportLoading,
+  exportToCSV,
 }: {
   filters: any;
   setFilters: any;
   resetFilters: () => void;
+  exportLoading: boolean;
+  exportToCSV: () => void;
 }) => {
   return (
     <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
@@ -126,6 +130,16 @@ const RegistryFilters = ({
       <Col>
         <Button style={{ width: "100%" }} onClick={resetFilters}>
           Reset Filters
+        </Button>
+      </Col>
+      <Col>
+        <Button
+          type="default"
+          onClick={exportToCSV}
+          loading={exportLoading}
+          className="mb-4"
+        >
+          Export to CSV
         </Button>
       </Col>
     </Row>

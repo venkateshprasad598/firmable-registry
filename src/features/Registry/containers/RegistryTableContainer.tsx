@@ -17,15 +17,22 @@ const RegistryTableContainer = () => {
     loading,
     error,
     fetchData,
+    exportLoading,
+    exportToCSV,
+    
   } = useRegistryTableState();
 
   return (
     <div className="border p-4 rounded-xl">
-      <p className="text-3xl mb-4">Firmable</p>
+      <p className="text-3xl font-semibold tracking-tight text-gray-800 mb-5">
+        Firmable
+      </p>
       <RegistryFilters
         filters={filters}
         setFilters={setFilters}
         resetFilters={resetFilters}
+        exportLoading={exportLoading}
+        exportToCSV={exportToCSV}
       />
       <RegistryTable
         data={data}

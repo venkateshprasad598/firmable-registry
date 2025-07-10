@@ -2,7 +2,7 @@ import RegistryTableContainer from "../features/Registry/containers/RegistryTabl
 
 const Registry = () => {
   return (
-    <div className="min-h-screen px-2 py-4">
+    <div className="min-h-screen px-1 py-4">
       <div className="max-w-[1440px] mx-auto px-2">
         <RegistryTableContainer/>
       </div>

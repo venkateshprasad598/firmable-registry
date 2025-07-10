@@ -1,6 +1,6 @@
 import axiosInstance from "../../../axios/Axios";
 
-export type AbnFilterParams = {
+export type FilterPayload = {
   page?: number;
   limit?: number;
   search?: string;
@@ -10,9 +10,19 @@ export type AbnFilterParams = {
   entityType?: string[];
 };
 
-export const fetchRecords = async (filters: AbnFilterParams) => {
+export const fetchRecords = async (filters: FilterPayload) => {
   try {
     const response = await axiosInstance.post("/registry-records", filters);
+    return response;
+  } catch (error) {
+    console.error("Error fetching ABN records:", error);
+    throw error;
+  }
+};
+
+export const exportRecords = async (filters: FilterPayload) => {
+  try {
+    const response = await axiosInstance.post("/export-records", filters);
     return response;
   } catch (error) {
     console.error("Error fetching ABN records:", error);
