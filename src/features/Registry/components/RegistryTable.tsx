@@ -1,8 +1,8 @@
 import { Pagination, Table, Tag, Typography } from "antd";
-import { columnHeaders } from "../../../constants/filtersData";
 import dayjs from "dayjs";
 import { useMemo } from "react";
-import type { IRecord } from "../types/registry";
+import { columnHeaders } from "../../../constants";
+import type { IRecord } from "../types";
 
 interface RegistryTableProps {
   data: IRecord[];
@@ -11,7 +11,6 @@ interface RegistryTableProps {
   page: number;
   totalPages: number;
   setPage: (page: number) => void;
-  fetchData: (page: number) => void;
   setSorter: (sort: {
     field: string | null;
     order: "ascend" | "descend" | null;
@@ -31,14 +30,13 @@ const getStatusBadgeColor = (status: string): string => {
   return statusMap[status as keyof typeof statusMap] || statusMap.default;
 };
 
-const RegistryTable: React.FC<RegistryTableProps> = ({
+export const RegistryTable: React.FC<RegistryTableProps> = ({
   data,
   loading,
   error,
   page,
   totalPages,
   setPage,
-  fetchData,
   setSorter,
   sorter,
 }) => {
@@ -103,11 +101,16 @@ const RegistryTable: React.FC<RegistryTableProps> = ({
   };
 
   if (error) {
-    return <Typography.Text type="danger">{error}</Typography.Text>;
+    return (
+      <Typography.Text type="danger" data-testid="registry-table-error">
+        {" "}
+        {error}
+      </Typography.Text>
+    );
   }
 
   return (
-    <div style={{ width: "100%" }}>
+    <div className="w-full">
       <Table
         dataSource={data}
         columns={columns}
@@ -117,23 +120,20 @@ const RegistryTable: React.FC<RegistryTableProps> = ({
         bordered
         scroll={{ x: "max-content" }}
         onChange={handleTableChange}
+        data-testid="registry-table"
       />
-      <div
-        style={{ display: "flex", justifyContent: "flex-end", marginTop: 16 }}
-      >
+      <div className="flex justify-end mt-4">
         <Pagination
           current={page}
           total={totalPages * 10}
           pageSize={10}
           onChange={(newPage) => {
             setPage(newPage);
-            fetchData(newPage);
           }}
           showSizeChanger={false}
+          data-testid="registry-table-pagination"
         />
       </div>
     </div>
   );
 };
-
-export default RegistryTable;

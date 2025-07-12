@@ -1,118 +1,101 @@
 import { SearchOutlined } from "@ant-design/icons";
-import { Button, Col, DatePicker, Input, Row, Select } from "antd";
+import { Button, Col, DatePicker, Input, Row } from "antd";
+import type { Dayjs } from "dayjs";
 import {
   entityTypeOptions,
   gstStatusOptions,
   stateOptions,
   statusOptions,
-} from "../../../constants/filtersData";
+} from "../../../constants";
+import { MultiSelectFilter } from "../../../shared";
 
-const RegistryFilters = ({
+export interface RegistryFiltersProps {
+  filters: {
+    search: string;
+    entityType: string[];
+    status: string[];
+    state: string[];
+    gstStatus: string[];
+    lastUpdatedDate: Dayjs | null;
+  };
+  setFilters: React.Dispatch<
+    React.SetStateAction<RegistryFiltersProps["filters"]>
+  >;
+  resetFilters: () => void;
+  exportLoading: boolean;
+  exportToCSV: () => void;
+  setPage: (page: number) => void;
+}
+
+export const RegistryFilters = ({
   filters,
   setFilters,
   resetFilters,
   exportLoading,
   exportToCSV,
-}: {
-  filters: any;
-  setFilters: any;
-  resetFilters: () => void;
-  exportLoading: boolean;
-  exportToCSV: () => void;
-}) => {
+  setPage,
+}: RegistryFiltersProps) => {
+  const handleFilterChange = <K extends keyof RegistryFiltersProps["filters"]>(
+    key: K,
+    value: RegistryFiltersProps["filters"][K]
+  ) => {
+    setFilters((prev) => ({ ...prev, [key]: value }));
+    setPage(1);
+  };
+
   return (
-    <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
+    <Row gutter={[16, 16]} className="mb-4" data-testid="registry-filters-row">
       <Col xs={24} sm={12} md={8} lg={6} xl={6}>
         <Input
           prefix={<SearchOutlined />}
           placeholder="Search by name or ABN..."
           value={filters.search}
-          onChange={(e) =>
-            setFilters((prev: any) => ({ ...prev, search: e.target.value }))
-          }
+          onChange={(e) => handleFilterChange("search", e.target.value)}
+          data-testid="filter-search-input"
         />
       </Col>
 
       <Col xs={24} sm={12} md={8} lg={6} xl={4}>
-        <Select
-          mode="multiple"
-          allowClear
-          showSearch
+        <MultiSelectFilter
           value={filters.entityType}
-          onChange={(val) =>
-            setFilters((prev: any) => ({ ...prev, entityType: val }))
-          }
+          onChange={(val) => handleFilterChange("entityType", val)}
           style={{ width: "100%" }}
           placeholder="Filter by Entity Type"
           options={entityTypeOptions}
-          filterOption={(input, option) =>
-            (option?.label ?? "")
-              .toString()
-              .toLowerCase()
-              .includes(input.toLowerCase())
-          }
+          data-testid="filter-entity-type-select"
         />
       </Col>
+
       <Col xs={24} sm={12} md={8} lg={6} xl={4}>
-        <Select
-          mode="multiple"
-          allowClear
-          showSearch
+        <MultiSelectFilter
           value={filters.status}
-          onChange={(val) =>
-            setFilters((prev: any) => ({ ...prev, status: val }))
-          }
+          onChange={(val) => handleFilterChange("status", val)}
           style={{ width: "100%" }}
           placeholder="Filter by Status"
           options={statusOptions}
-          filterOption={(input, option) =>
-            (option?.label ?? "")
-              .toString()
-              .toLowerCase()
-              .includes(input.toLowerCase())
-          }
+          data-testid="filter-status-select"
         />
       </Col>
 
       <Col xs={24} sm={12} md={8} lg={6} xl={4}>
-        <Select
-          mode="multiple"
-          allowClear
-          showSearch
+        <MultiSelectFilter
           value={filters.state}
-          onChange={(val) =>
-            setFilters((prev: any) => ({ ...prev, state: val }))
-          }
+          onChange={(val) => handleFilterChange("state", val)}
           style={{ width: "100%" }}
           placeholder="Filter by State"
           options={stateOptions}
-          filterOption={(input, option) =>
-            (option?.label ?? "")
-              .toString()
-              .toLowerCase()
-              .includes(input.toLowerCase())
-          }
+          data-testid="filter-state-select"
         />
       </Col>
 
       <Col xs={24} sm={12} md={8} lg={6} xl={4}>
-        <Select
-          mode="multiple"
-          allowClear
-          showSearch
+        <MultiSelectFilter
           value={filters.gstStatus}
-          onChange={(val) =>
-            setFilters((prev: any) => ({ ...prev, gstStatus: val }))
-          }
+          onChange={(val) => handleFilterChange("gstStatus", val)}
           style={{ width: "100%" }}
           placeholder="Filter by GST Status"
           options={gstStatusOptions}
-          filterOption={(input, option) =>
-            (option?.label ?? "")
-              .toString()
-              .toLowerCase()
-              .includes(input.toLowerCase())
-          }
+          data-testid="filter-gst-status-select"
         />
       </Col>
 
@@ -120,15 +103,18 @@ const RegistryFilters = ({
         <DatePicker
           style={{ width: "100%" }}
           value={filters.lastUpdatedDate}
-          onChange={(date) =>
-            setFilters((prev: any) => ({ ...prev, lastUpdatedDate: date }))
-          }
+          onChange={(date) => handleFilterChange("lastUpdatedDate", date)}
           placeholder="Last Updated From"
+          data-testid="filter-last-updated-date-picker"
         />
       </Col>
 
       <Col>
-        <Button style={{ width: "100%" }} onClick={resetFilters}>
+        <Button
+          style={{ width: "100%" }}
+          onClick={resetFilters}
+          data-testid="reset-filters-btn"
+        >
           Reset Filters
         </Button>
       </Col>
@@ -138,6 +124,7 @@ const RegistryFilters = ({
           onClick={exportToCSV}
           loading={exportLoading}
           className="mb-4"
+          data-testid="export-csv-btn"
         >
           Export to CSV
         </Button>
@@ -145,5 +132,3 @@ const RegistryFilters = ({
     </Row>
   );
 };
-
-export default RegistryFilters;
