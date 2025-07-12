@@ -26,8 +26,7 @@ export const useRegistryTableState = () => {
     return () => {
       const payload: Record<string, any> = {};
 
-      if (debouncedSearch.trim()?.length)
-        payload.search = debouncedSearch.trim();
+      if (debouncedSearch.trim()) payload.search = debouncedSearch.trim();
       if (filters?.status?.length) payload.status = filters.status;
       if (filters?.state?.length) payload.state = filters.state;
       if (filters?.gstStatus?.length) payload.gstStatus = filters.gstStatus;
