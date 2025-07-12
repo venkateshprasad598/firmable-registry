@@ -1,14 +1,14 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import NotFound from "./pages/NotFound";
-import Registry from "./pages/Registry";
+import { routes } from "./routes";
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Registry />} />
-          <Route path="*" element={<NotFound />} />
+          {routes.map(({ path, element }) => (
+            <Route key={path} path={path} element={element} />
+          ))}
         </Routes>
       </BrowserRouter>
     </>

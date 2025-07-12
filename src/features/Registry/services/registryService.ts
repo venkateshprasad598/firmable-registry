@@ -1,4 +1,4 @@
-import axiosInstance from "../../../axios/Axios";
+import axiosInstance from "../../../axios";
 
 export type FilterPayload = {
   page?: number;
